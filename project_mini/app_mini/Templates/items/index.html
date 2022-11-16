@@ -1,0 +1,54 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+IMS | Items
+{% endblock %}
+
+{% block content %}
+<div class="container pt-5">
+    {% if msg %}
+        <div class="alert alert-success mb-2">{{ msg }}</div>
+    {% endif %}
+    <div class="card">
+        <div class="card-header">
+            <h1 class="card-title">IMS Items</h1>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead class="text-center">
+                    <tr>
+                        <th>S.No</th>
+                        <th>Title</th>
+                        <th>Particular</th>
+                        <th>LF</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Date</th>
+                        <th>Category</th>
+                        <th colspan="3">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ item.title }}</td>
+                        <td>{{ item.particular }}</td>
+                        <td>{{ item.ledger_folio }}</td>
+                        <td>{{ item.price }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.total }}</td>
+                        <td>{{ item.entry_date }}</td>
+                        <td>{{ item.category.category }}</td>
+                        <td><a href="{% url 'items.edit' item.id %}">Edit</a></td>
+                        <td><a href="{% url 'items.show' item.id %}">Show</a></td>
+                        <td><a href="{% url 'items.delete' item.id %}">Delete</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

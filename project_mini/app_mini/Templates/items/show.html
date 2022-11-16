@@ -1,0 +1,20 @@
+{% block content %}
+<div class="container pt-5">
+    <div class="card">
+        <div class="card-header">
+            <h1 class="card-title">IMS | Items VIEW</h1>
+        </div>
+        <div class="card-body">
+            <h1>{{ item.title }}</h1>
+            <hr>
+            <h3>{{ item.particular }}</h3>
+            <h3>{{ item.ledger_folio }}</h3>
+            <h3>{{ item.price }}</h3>
+            <h3>{{ item.quantity }}</h3>
+            <h3>{{ item.total }}</h3>
+            <h3>{{ item.entry_date }}</h3>
+            <h3>{{ item.category }}</h3>
+        </div>
+    </div>
+</div>
+{% endblock %}

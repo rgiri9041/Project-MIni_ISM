@@ -1,0 +1,26 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+IMS | Items Create
+{% endblock %}
+
+{% block content %}
+<div class="container pt-5">
+    <div class="card">
+        <div class="card-header">
+            <h1 class="card-title">IMS | Items CREATE</h1>
+        </div>
+        {% if msg %}
+           <div class="alert alert-success">{{ msg }}</div>
+        {% endif %}
+        <div class="card-body">
+            <form method="POST" action="{% url 'items.create' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                <input type="submit" value="ADD ITEM" class="btn btn-primary">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
