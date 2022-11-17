@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import ItemCreateForm
+from .forms import ItemCreateForm, UserLoginForm, UserRegistrationForm
 from .models import Category, Item, AppUser
 from datetime import datetime
 # Create your views here.
@@ -63,3 +63,18 @@ def item_delete(request, id):
     item = Item.objects.get(id=id)
     item.delete()
     return redirect('items.index')
+
+def user_login(request):
+    user_login_form = UserLoginForm()
+    context = {"form":user_login_form}
+    return render(request, "users/login.html",context)
+
+def user_register(request):
+    user_register_form = UserRegistrationForm()
+    context = {"form": user_register_form}
+    if request.method == "post":
+        user =  UserRegistrationForm(request.post)
+        if user.is_valid:
+            user.save()
+            return redirect("users.register")
+    return render(request, "users/register.html", context)

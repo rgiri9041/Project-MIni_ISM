@@ -1,5 +1,6 @@
 from django import forms
-from .models import Item
+from django.forms import PasswordInput
+from .models import Item, AppUser
 
 class ItemCreateForm(forms.ModelForm):
     class Meta:
@@ -8,4 +9,16 @@ class ItemCreateForm(forms.ModelForm):
             "ledger_folio", "quantity", "price")
         model = Item
 
+class UserLoginForm(forms.ModelForm):
+    password = forms.CharField(widget=PasswordInput)
+    class Meta:
+        fields = ("email", "password")
+        model = AppUser
 
+
+class UserRegistrationForm(forms.ModelForm):
+    password = forms.CharField(widget=PasswordInput)
+    class Meta:
+        fileds = "__all__"
+        model = AppUser
+    
