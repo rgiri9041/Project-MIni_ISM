@@ -15,10 +15,10 @@ class UserLoginForm(forms.ModelForm):
         fields = ("email", "password")
         model = AppUser
 
-
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=PasswordInput)
     class Meta:
-        fileds = "__all__"
+        fields = "__all__"
         model = AppUser
+
     
