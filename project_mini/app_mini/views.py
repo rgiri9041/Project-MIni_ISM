@@ -95,7 +95,13 @@ def user_login(request):
             return redirect("users.login")
     return render(request, "users/login.html",context)
      
+def user_logout(request):
+    if request.session.hs_key('session_user'):
+        del request.session['session_user']
+        return redirect("users_login")
+    return redirect("users.login")
 
+    
 def user_register(request):
     user_register_form = UserRegistrationForm()
     context = {"form": user_register_form}
