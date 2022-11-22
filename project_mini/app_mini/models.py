@@ -12,11 +12,14 @@ class Category(models.Model):
         db_table = "ims_categories"
     
 class AppUser(models.Model):
-    fist_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100)
     middle_name = models.CharField(max_length=100, null=True, blank=True)
     last_name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.first_name
 
     class Meta:
         db_table = "ims_app_users"
@@ -32,6 +35,8 @@ class Item(models.Model):
     entry_date = models.DateTimeField(null=True, blank=True)
     update_date = models.DateTimeField(null=True, blank=True)
 
+    def __str__(self):
+        return self.title
 
     class Meta:
         db_table = "ims_items"

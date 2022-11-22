@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import ItemCreateForm, UserLoginForm, UserRegistrationForm
 from .models import Category, Item, AppUser
 from datetime import datetime
+
 # Create your views here.
 def item_index(request):
     if request.session.has_key('session_user'):
@@ -34,21 +35,22 @@ def item_create(request):
 def item_edit(request, id):
     if request.session.has_key('session_user'):
         item = Item.objects.get(id=id)
-        Categories = Category.objects.all()
+        categories = Category.objects.all()
 
-        context = {"item": item,"categories": Categories}
+        context = {"item": item, "categories": categories}
         return render(request, 'items/edit.html', context)
     return redirect("users.login")
 
-def iitem_update(request):
+def item_update(request):
     if request.session.has_key('session_user'):
         item_create_form = ItemCreateForm()
         context = {"form": item_create_form}
         if request.method == "POST":
             context.update({"msg":"Item added successfully"})
-            item = Item(id=request.post.get('id'))
 
+            item = Item(id=request.POST.get('id'))
             category = Category.objects.get(id=request.POST.get('category'))
+
             item.title = request.POST.get('title')
             item.particular = request.POST.get('particular')
             item.ledger_folio = request.POST.get('ledger_folio')
@@ -61,7 +63,7 @@ def iitem_update(request):
             return redirect("items.index")
         return render(request, 'items/create.html', context)
     return redirect("users.login")
-    
+
 def item_show(request, id):
     if request.session.has_key('session_user'):
         item = Item.objects.get(id=id)
@@ -77,37 +79,32 @@ def item_delete(request, id):
     return redirect("users.login")
 
 def user_login(request):
-    
     user_login_form = UserLoginForm()
-    context = {"form":user_login_form}
-    if request.method == "post":
-         req_email = request.post.get('email')
-         req_password = request.post.get('password')
-         try:
+    context = {"form": user_login_form}
+    if request.method == "POST":
+        req_email = request.POST.get('email')
+        req_password = request.POST.get('password')
+        try:
             user = AppUser.objects.get(email=req_email)
             if user.email == req_email and user.password == req_password:
-                request.session['session_email'] = user
-                if request.session.has_key('session_user'):
-                    return redirect("items.index")
-                return redirect("users.login")
-               
-         except:
+                request.session['session_user'] = user.email
+                return redirect("items.index")
+        except:
             return redirect("users.login")
-    return render(request, "users/login.html",context)
-     
+    return render(request, "users/login.html", context)
+
 def user_logout(request):
-    if request.session.hs_key('session_user'):
+    if request.session.has_key('session_user'):
         del request.session['session_user']
-        return redirect("users_login")
+        return redirect("users.login")
     return redirect("users.login")
 
-    
 def user_register(request):
-    user_register_form = UserRegistrationForm()
-    context = {"form": user_register_form}
-    if request.method == "post":
-        user =  UserRegistrationForm(request.post)
-        if user.is_valid:
+    use_register_form = UserRegistrationForm()
+    context = {"form": use_register_form}
+    if request.method == "POST":
+        user = UserRegistrationForm(request.POST)
+        if user.is_valid():
             user.save()
             return redirect("users.register")
     return render(request, "users/register.html", context)

@@ -18,5 +18,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('mini_ims', include('app_mini.urls')),
+    path('mini_ims/', include('app_mini.urls')),
 ]
