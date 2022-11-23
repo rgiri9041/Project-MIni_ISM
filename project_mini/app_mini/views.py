@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import ItemCreateForm, UserLoginForm, UserRegistrationForm
 from .models import Category, Item, AppUser
 from datetime import datetime
+from django.core.mail import send_mail 
 
 # Create your views here.
 def item_index(request):
@@ -106,5 +107,12 @@ def user_register(request):
         user = UserRegistrationForm(request.POST)
         if user.is_valid():
             user.save()
+
+            send_mail(
+                'RE:Email Verification',
+                'Your verification code is: 2456',
+                'rgiri9041@gmail.com',
+                [request.POST.get('email')],
+            )
             return redirect("users.register")
     return render(request, "users/register.html", context)
