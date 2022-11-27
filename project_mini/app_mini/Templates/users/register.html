@@ -18,7 +18,7 @@
 
             </div>
             <div class="card-body">
-                <form action="{% url 'users.register' %}" method="post">
+                <form action="{% url 'users.register' %}" method="post", enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.as_p }}
                     <input type="submit" class="btn btn-primary" value="Register"

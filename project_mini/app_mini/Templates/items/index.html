@@ -4,6 +4,12 @@
 IMS | Items
 {% endblock %}
 
+{% load static %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
 {% block content %}
 <div class="container pt-5">
     {% if msg %}

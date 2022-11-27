@@ -1,0 +1,23 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+IMS | Profile
+{% endblock %}
+{% load static%}
+
+{% block content %}
+<div class="container pt-5">
+    <div class="card">
+        <div class="card-header">
+                <img src = "{% static user.profile %}" alt = "" width="100" height="100">
+        </div>
+ 
+        <div class="card-body">
+            <h1>{{ user.first_name }} {{ user.last_name }} {{ user.middle_name }}</h1>
+            <hr>
+            <h3> Email: {{ user.email }}</h3>
+ 
+        </div>
+    </div>
+</div>
+{% endblock %}

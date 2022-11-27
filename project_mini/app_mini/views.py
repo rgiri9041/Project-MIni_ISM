@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import ItemCreateForm, UserLoginForm, UserRegistrationForm
+from .forms import ItemCreateForm, UserLoginForm, UserRegistrationForm, UserProfileForm
 from .models import Category, Item, AppUser
 from datetime import datetime
 from django.core.mail import send_mail 
@@ -95,24 +95,36 @@ def user_login(request):
     return render(request, "users/login.html", context)
 
 def user_logout(request):
+
     if request.session.has_key('session_user'):
         del request.session['session_user']
         return redirect("users.login")
     return redirect("users.login")
 
+def user_profile(request):
+    profile = AppUser.objects.get(email=request.session['session_user'])
+    context = {"user": profile}
+    if request.method == "POST":
+        user = AppUser.objects.get(email=request.session.get['session_user'])
+        profile = UserProfileForm(request.FILES, user=user)
+        if profile.is_valid():
+            profile.save()
+            return redirect("users.profile")
+    return render(request, 'users/profile.html', context)
+
 def user_register(request):
     use_register_form = UserRegistrationForm()
     context = {"form": use_register_form}
     if request.method == "POST":
-        user = UserRegistrationForm(request.POST)
+        user = UserRegistrationForm(request.POST, request.FILES)
         if user.is_valid():
             user.save()
 
             send_mail(
-                'RE:Email Verification',
-                'Your verification code is: 2456',
-                'rgiri9041@gmail.com',
-                [request.POST.get('email')],
+                'RE:Email Verification', # Subect
+                'Your verification code is: 2456', #message
+                'rgiri9041@gmail.com', # Sender email
+                [request.POST.get('email')], #receipent/receiver
             )
             return redirect("users.register")
     return render(request, "users/register.html", context)
