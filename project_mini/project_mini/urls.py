@@ -19,4 +19,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('mini_ims/', include('app_mini.urls')),
+    path('api-auth/', include('rest_framework.urls'))
+
 ]

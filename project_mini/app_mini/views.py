@@ -3,7 +3,50 @@ from .forms import ItemCreateForm, UserLoginForm, UserRegistrationForm, UserProf
 from .models import Category, Item, AppUser
 from datetime import datetime
 from django.core.mail import send_mail 
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.views import APIView
+from .serializers import ItemSerializer
 
+#class base view for api
+class ItemApiView(APIView):
+    def get(self, request):
+        try:
+            item = Item.objects.all()
+            serializer = ItemSerializer(item, many = True)
+            context = {
+                "message": "Item List",
+                "status":  200,
+                "data": serializer.data,
+                "error": []
+            }
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            return Response({"error": "No data Found "}, status=status.HTTP_404_NOT_FOUND)
+
+    def post(self, request):
+        serializer = ItemSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            context = {
+                "message": "Item List",
+                "status": 201,
+                "data": serializer.data,
+                "error": []
+            }
+            return Response(context,status=status.HTTP_201_CREATED)
+        else:
+            context = {
+                "message": "Item List",
+                "status": 400,
+                "data": [],
+                "error": serializer.errors
+            }
+            return Response(context, status=status.HTTP_400_BAD_REQUEST)
+
+
+        
 # Create your views here.
 def item_index(request):
     if request.session.has_key('session_user'):

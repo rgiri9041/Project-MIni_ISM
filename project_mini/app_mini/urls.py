@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views 
+from .views import(ItemApiView)
 
 urlpatterns = [
     #User
@@ -15,4 +16,10 @@ urlpatterns = [
     path('items/edit/<int:id>/', views.item_edit, name="items.edit"),
     path('items/show/<int:id>/', views.item_show, name="items.show"),
     path('items/delete/<int:id>/', views.item_delete, name="items.delete"),
+
+    # api urls
+    path('path/items/', views.ItemApiView.as_view()),
 ]
+
+
+    
