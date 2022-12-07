@@ -45,8 +45,41 @@ class ItemApiView(APIView):
             }
             return Response(context, status=status.HTTP_400_BAD_REQUEST)
 
+class ItemApiIDView(APIView):
+    def get_Object(self, id):
+        try:
+            data = Item.objects.get(id=id)
+            return data
+        except data.DoesNotExit:
+            return None
 
+    def get(self, request, id):
+        item_instance = self.get_Object(id)
+        if not item_instance:
+            return Response({"error": "not found"},status=status.HTTP_404_NOT_FOUND)
+        serializer = ItemSerializer(item_instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def delete(self, request, id):
+        item_instance = self.get_Object(id)
+        if not item_instance:
+            return Response({"error": "not found"},status=status.HTTP_404_NOT_FOUND)
         
+        item_instance.delete()
+        return Response({"error": "Item Deleted"}, status=status.HTTP_200_OK)
+
+    def put(self, request, id):
+        item_instance = self.get_Object( id)
+        if not item_instance:
+            return Response({"error": "not found"},status=status.HTTP_404_NOT_FOUND)
+        serializer = ItemSerializer(instance=item_instance, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
+
+
 # Create your views here.
 def item_index(request):
     if request.session.has_key('session_user'):
